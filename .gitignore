@@ -1,0 +1,9 @@
+# Ignoring virtual environments
+/venv*
+
+*.db
+reddit.py
+/bert-server
+/__pycache__
+/.idea
+sql*
