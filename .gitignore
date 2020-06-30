@@ -5,6 +5,4 @@ reddit.py
 /.idea
 sql*
 
-similarity.py
-output.txt
-clustering.py
+/files_no_more_needed
