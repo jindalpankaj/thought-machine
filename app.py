@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-import os
 from datetime import datetime as dt
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
@@ -9,31 +8,12 @@ import sys # for printing to std.err only for debugging purposes
 # import reddit
 
 import semantic_search as ss
-
-# setting up the SQLite db named thought_db
-basedir = os.path.abspath(os.path.dirname(__file__))
-
-
-class Config(object):
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-                              'sqlite:///' + os.path.join(basedir, 'thought_db_2.db?check_same_thread=False')
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-
+from config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 
-
-# creating table User in thought_db
-# class User(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     username = db.Column(db.String(80), unique=True, nullable=False)
-#     email = db.Column(db.String(120), unique=True, nullable=False)
-#     password = db.Column(db.String(120), nullable=False)
-#
-#     def __repr__(self):
-#         return '<User %r>' % self.username
 
 # creating table Thought in thought_db
 class Thought(db.Model):
@@ -43,7 +23,6 @@ class Thought(db.Model):
 
     def __repr__(self):
         return self.thought_text
-
 
 # creating all tables in the DB
 # db.create_all()
@@ -63,10 +42,11 @@ class Thought(db.Model):
 # define a decorator for home route
 @app.route("/", methods=['GET', 'POST'])
 def get_player_name():
+    print("5")
     return render_template("index.html")
 
 
-@app.route("/second_page", methods=['POST'])
+@app.route("/matching_thoughts", methods=['POST'])
 def show_second_page():
     # print("In show_second_page beginning... ")
     print("\n Querying previous thoughts started...", file=sys.stderr)
@@ -116,8 +96,8 @@ if __name__ == "__main__":
 
 
 # TODO:
-# 1. Improve search; Maybe use clustering, or BERT?
-# 2. Organize this file - move DB related code in a separate file
-# 3. Move the getSimilarSentence function in a separate file (already exists, update it) - Same as where Search would be.
+# 1. Improve search; Maybe use clustering, or BERT? - DONE
+# 2. Organize this file - move DB related code in a separate file 
+# 3. Move the getSimilarSentence function in a separate file (already exists, update it) - Same as where Search would be. - DONE
 # 4. Incorporate fields other than just thought in the DB. Datetime.
 # 5. Create user sign in system, and releated UI changes.
