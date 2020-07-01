@@ -27,8 +27,14 @@ def getSimilarSentences(current_sentence, previous_sentences, threshold):
 
     prev_cos = pd.DataFrame(list(zip(previous_sentences, cosine_similarity)),
                            columns=['Sentences', 'Cosine'])
-
+    
     prev_cos.sort_values(by=['Cosine'], ascending=False, inplace=True)
+    
+    print("threshold type is: ", type(threshold))
+    print(prev_cos['Cosine'][1])
+    print("Cosine type is: ", type(prev_cos['Cosine'][1]))
+    print(prev_cos['Cosine'] > threshold)
+    
     print("\n New Sentence is: ", current_sentence, file=sys.stderr)
     print("\n Top 100 Previous sentences and their cosine-similarity with new query sentence is as follow: \n", prev_cos.head(100), file=sys.stderr)
 

@@ -1,16 +1,18 @@
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
+import psycopg2
+
 from datetime import datetime as dt
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
+# from nltk.corpus import stopwords
+# from nltk.tokenize import word_tokenize
 import pandas as pd
 import sys # for printing to std.err only for debugging purposes
 # import reddit
-
 import semantic_search as ss
 from config import Config
 
 app = Flask(__name__)
+# app.config.from_object(os.environ['APP_SETTINGS'])
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 
@@ -24,8 +26,9 @@ class Thought(db.Model):
     def __repr__(self):
         return self.thought_text
 
-# creating all tables in the DB
-# db.create_all()
+# creating all tables in the DB, if they don't already exist (create_all does it only if they don't already exist)
+# Note that this is not a good practice to set/modify database structure in the web facing flask file.
+db.create_all()
 
 # Populating the DB with initial data from r/showerthoughts
 # r1 = reddit.DataFromReddit()
@@ -68,7 +71,7 @@ def show_second_page():
     # print(new_thought)
 
     # num_similar_thoughts = 5 # can change it later or ask the value from user
-    threshold_similarity = 0.75 # because number returns even unrelated thoughts
+    threshold_similarity = 0.70 # because number returns even unrelated thoughts
     
     print("\n About to call similar thoughts function now...", file=sys.stderr)    
     similar_thoughts = ss.getSimilarSentences(new_thought, prev_thoughts, threshold_similarity)
