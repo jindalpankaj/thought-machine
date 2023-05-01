@@ -1,6 +1,6 @@
 https://download.pytorch.org/whl/cpu/torch-1.5.1%2Bcpu-cp38-cp38-linux_x86_64.whl
 https://download.pytorch.org/whl/cpu/torchvision-0.6.1%2Bcpu-cp38-cp38-linux_x86_64.whl
-Flask==1.1.2
+Flask==2.3.2
 Flask-SQLAlchemy==2.4.3
 pandas==1.0.5
 sentence-transformers==0.2.6.2
